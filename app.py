@@ -2,10 +2,23 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.font_manager as fm
+import os
 
-# 한글 폰트 설정
-plt.rcParams['font.family'] = 'Malgun Gothic'
-plt.rcParams['axes.unicode_minus'] = False
+# 한글 폰트 설정 (로컬 및 클라우드 자동 인식)
+@st.cache_resource
+def set_korean_font():
+    # Streamlit Cloud 리눅스 서버의 나눔고딕 경로
+    font_path = '/usr/share/fonts/truetype/nanum/NanumGothic.ttf'
+    if os.path.exists(font_path):
+        fm.fontManager.addfont(font_path)
+        plt.rcParams['font.family'] = 'NanumGothic'
+    else:
+        # 내 컴퓨터(Windows) 환경일 경우
+        plt.rcParams['font.family'] = 'Malgun Gothic'
+    plt.rcParams['axes.unicode_minus'] = False
+
+set_korean_font()
 
 # 페이지 기본 설정
 st.set_page_config(page_title="스마트 물품보관함 AI 관제 시스템", layout="wide")
